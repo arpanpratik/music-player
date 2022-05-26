@@ -4,26 +4,59 @@ import React, { useEffect, useRef, useState } from 'react';
 
 const Audioplayer = (props: any) => {
   // const mp3 = 'https://aveclagare.org/mp3/One%20Shot%20Lili%20-%20Master%20Half%20Wizard.mp3';
-  const mp3 = "https://ia800905.us.archive.org/19/items/FREE_background_music_dhalius/backsound.mp3"
+  const mp3 = "https://ia800905.us.archive.org/19/items/FREE_background_music_dhalius/backsound.mp3";
+  // const mp3 = "C:/Users/arpan/Downloads/Ya-Rabba.mp3";
   const [audio] = useState(new Audio(mp3));
-  // let src;
   const audioPlayer = useRef(null); //document.querySelector(".audio-player");
-  // const playBtn = useRef(null);
+
+  const [song, setSongObj] = useState({
+    duration: null,
+    current: null,
+    name: 'FREE_background_music_dhalius'
+  });
 
   const [isPlaying, setIsPlaying] = useState(false);
-  const [song, setSong] = useState();
 
   useEffect(() => {
-    (isPlaying) ? audio.play() : audio.pause();
+    if (isPlaying) {
+      audio.play();
+    } else {
+      audio.pause();
+    }
+    audio.volume = 0.06;
+  }, [isPlaying]);
 
-    // console.log(audio.duration)
-  })
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (isPlaying) {
+        audioPlayer.current.querySelector(".progress").style.width = (audio.currentTime / audio.duration) * 100 + "%";
 
-  const setDuration = () => {
+        setSongObj(prevState => ({
+          ...prevState,
+          ...{
+            duration: convertTimer(audio.duration),
+            current: convertTimer(audio.currentTime)
+          }
+        }));
 
-  };
+        /* Progress bar */
+      }
+    }, 500);
+    return () => clearInterval(interval);
+  }, [isPlaying]);
 
-  const createPlayList = () => { };
+  const convertTimer = (sec: any) => {
+    let hours: any = Math.floor(sec / 3600);
+    (hours >= 1) ? sec = sec - (hours * 3600) : hours = '00';
+    let min: any = Math.floor(sec / 60);
+    (min >= 1) ? sec = sec - (min * 60) : min = '00';
+    (sec < 1) ? sec = '00' : void 0;
+
+    (min.toString().length == 1) ? min = '0' + min : void 0;
+    (sec.toString().length == 1) ? sec = '0' + sec : void 0;
+
+    return min + ':' + sec.toString().split(".")[0];
+  }
 
   return (
     <div className='top-10'>
@@ -38,11 +71,11 @@ const Audioplayer = (props: any) => {
             </div>
           </div>
           <div className="time">
-            <div className="current">0:00</div>
+            <div className="current">{song.current || '00:00'}</div>
             <div className="divider">/</div>
-            <div className="length"></div>
+            <div className="length">{song.duration || '00:00'}</div>
           </div>
-          <div className="name">Music Song</div>
+          <div className="name">{song.name || 'Music Song'}</div>
           <div className="volume-container">
             <div className="volume-button">
               <div className="volume icono-volumeMedium"></div>
