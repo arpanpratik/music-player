@@ -1,3 +1,5 @@
+import './audio-player.css';
+
 import React from 'react';
 
 const Audioplayer = () => {
