@@ -1,0 +1,6 @@
+.playlistFooter {
+    bottom: 0;
+    position: fixed;
+    background-color:  wheat;
+    width: 100%;
+}

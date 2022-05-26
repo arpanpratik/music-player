@@ -1,0 +1,6 @@
+.playlistHeader {
+    top: 0;
+    position: sticky;
+    background-color: wheat;
+    width: 100%;
+}

@@ -9,6 +9,7 @@
     overflow: hidden;
     display: grid;
     grid-template-rows: 6px auto;
+    margin: 0 auto;
 }
 
 .audio-player .timeline {
