@@ -14,7 +14,7 @@ const Header = () => {
         <div className='playlistHeader'>{songName}</div>
         <GlobalSearch />
         <Routes>
-            <Route path="/" element={ <Home/> } />
+            {/* <Route path="/" element={ <Home/> } /> */}
             <Route path="about" element={ <Podcast /> } />            
         </Routes>
     </nav>   

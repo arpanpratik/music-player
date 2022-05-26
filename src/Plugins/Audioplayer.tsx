@@ -1,38 +1,40 @@
 import './audio-player.css';
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-const Audioplayer = () => {
-  const mp3 = 'https://aveclagare.org/mp3/One%20Shot%20Lili%20-%20Master%20Half%20Wizard.mp3';
-  let audio = new Audio(mp3);
-  let src;
-  // audio.play();
+const Audioplayer = (props: any) => {
+  // const mp3 = 'https://aveclagare.org/mp3/One%20Shot%20Lili%20-%20Master%20Half%20Wizard.mp3';
+  const mp3 = "https://ia800905.us.archive.org/19/items/FREE_background_music_dhalius/backsound.mp3"
+  const [audio] = useState(new Audio(mp3));
+  // let src;
+  const audioPlayer = useRef(null); //document.querySelector(".audio-player");
+  // const playBtn = useRef(null);
 
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [song, setSong] = useState();
 
-  const play = () => {
-    src = mp3;
+  useEffect(() => {
+    (isPlaying) ? audio.play() : audio.pause();
 
-    console.log('clicked');
+    // console.log(audio.duration)
+  })
 
-    console.log('audio', audio.duration);
+  const setDuration = () => {
 
-
-    // document.getElementById('my-player').play()
-
-    // audio.play();
   };
-  // const stop = () => audio.pause();
+
+  const createPlayList = () => { };
 
   return (
     <div className='top-10'>
 
-      <div className="audio-player">
+      <div className="audio-player" id='container' ref={audioPlayer}>
         <div className="timeline">
           <div className="progress"></div>
         </div>
         <div className="controls">
           <div className="play-container">
-            <div className="toggle-play play">
+            <div className={`toggle-play ${!isPlaying ? "play" : "pause"}`} onClick={() => setIsPlaying(!isPlaying)}>
             </div>
           </div>
           <div className="time">
@@ -53,7 +55,7 @@ const Audioplayer = () => {
         </div>
       </div>
 
-    </div>
+    </div >
   )
 }
 
