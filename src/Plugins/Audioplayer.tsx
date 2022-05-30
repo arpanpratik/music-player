@@ -1,22 +1,71 @@
 import './audio-player.css';
+import { songs } from '../asset/data/data.js';
 
 import React, { useEffect, useRef, useState } from 'react';
 
 const Audioplayer = (props: any) => {
-  // const mp3 = 'https://aveclagare.org/mp3/One%20Shot%20Lili%20-%20Master%20Half%20Wizard.mp3';
-  const mp3 = "https://ia800905.us.archive.org/19/items/FREE_background_music_dhalius/backsound.mp3";
-  // const mp3 = "C:/Users/arpan/Downloads/Ya-Rabba.mp3";
-  const [audio] = useState(new Audio(mp3));
-  const audioPlayer = useRef(null); //document.querySelector(".audio-player");
+  const _baseURL = './data.json';
 
+  const getSongs = () => {
+    fetch(_baseURL, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    }).then((data) => {
+      console.log(data);
+    })
+  }
+
+  let [audio, setAudio] = useState(new Audio());
+  const audioPlayer = useRef(null);
   const [song, setSongObj] = useState({
+    id: null,
     duration: null,
     current: null,
-    name: 'FREE_background_music_dhalius'
+    name: ''
   });
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const setSong = (song: any, autoplay = false) => {
+    const current = song;
+
+    setSongObj(prevState => ({
+      ...prevState,
+      ...current
+    }));
+
+    audio.src = current.url;
+
+    if (autoplay) {
+      setIsPlaying(true);
+      audio.play();
+    };
+  }
+
+  const next = () => {
+    // console.log(song, songs);
+    const found = songs.findIndex((s, index) => s.id == song.id);
+    console.log(songs[found + 1]);
+    setSong(songs[found + 1], true);
+  }
+
+  const prev = () => {
+    const pre = songs.findIndex((s, index) => s.id == song.id);
+    if (pre == 0) return;
+    console.log(songs[pre - 1]);
+
+    setSong(songs[pre - 1], true);
+  }
+
+  useEffect(() => {
+    setSong(songs[0]);
+  }, [])
+
+
+
 
   /*  */
-  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     if (isPlaying) {
@@ -70,6 +119,8 @@ const Audioplayer = (props: any) => {
           <div className="play-container">
             <div className={`toggle-play ${!isPlaying ? "play" : "pause"}`} onClick={() => setIsPlaying(!isPlaying)}>
             </div>
+            <div onClick={next} className="next"> Next </div>
+            <div onClick={prev}> Prev </div>
           </div>
           <div className="time">
             <div className="current">{song.current || '00:00'}</div>

@@ -131,3 +131,8 @@
     left: -123px;
     width: 120px;
 }
+
+.next {
+    padding: 0 10px;
+    cursor: pointer;
+}

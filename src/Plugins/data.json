@@ -1,0 +1,26 @@
+[{
+        "id": 1,
+        "name": "asdas",
+        "url": "./songs/1.mp3"
+    },
+    {
+        "id": 2,
+        "name": "222",
+        "url": "./songs/1.mp3"
+    },
+    {
+        "id": 3,
+        "name": "33",
+        "url": "./songs/1.mp3"
+    },
+    {
+        "id": 4,
+        "name": "444",
+        "url": "./songs/1.mp3"
+    },
+    {
+        "id": 5,
+        "name": "555",
+        "url": "./songs/1.mp3"
+    }
+]
