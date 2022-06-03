@@ -1,9 +1,9 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom"
 import './Header.css';
-import GlobalSearch from './GlobalSearch';
-import Home from './Home';
-import Podcast from './Podcast';
+import GlobalSearch from '../../../GlobalSearch';
+import Home from '../../../pages/Home';
+import Podcast from '../../../Podcast';
 
 const Header = () => {
 

@@ -1,21 +1,14 @@
 import './audio-player.css';
 import { songs } from '../asset/data/data.js';
-
+import { SongBase, convertTimer } from './playlist';
+import httpService from "../services/httpService";
 import React, { useEffect, useRef, useState } from 'react';
 
-const Audioplayer = (props: any) => {
-  const _baseURL = './data.json';
+const player = new (SongBase as any)(songs, 0);
+console.log(player);
 
-  const getSongs = () => {
-    fetch(_baseURL, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    }).then((data) => {
-      console.log(data);
-    })
-  }
+const Audioplayer = (props: any) => {
+  const songlist = songs;
 
   let [audio, setAudio] = useState(new Audio());
   const audioPlayer = useRef(null);
@@ -44,26 +37,19 @@ const Audioplayer = (props: any) => {
   }
 
   const next = () => {
-    // console.log(song, songs);
-    const found = songs.findIndex((s, index) => s.id == song.id);
-    console.log(songs[found + 1]);
-    setSong(songs[found + 1], true);
+    const nextSongIndex = player.next();
+    setSong(songs[nextSongIndex], true);
+
   }
 
   const prev = () => {
-    const pre = songs.findIndex((s, index) => s.id == song.id);
-    if (pre == 0) return;
-    console.log(songs[pre - 1]);
-
-    setSong(songs[pre - 1], true);
+    const prevSongIndex = player.prev();
+    setSong(songs[prevSongIndex], true);
   }
 
   useEffect(() => {
     setSong(songs[0]);
   }, [])
-
-
-
 
   /*  */
 
@@ -95,18 +81,7 @@ const Audioplayer = (props: any) => {
     return () => clearInterval(interval);
   }, [isPlaying]);
 
-  const convertTimer = (sec: any) => {
-    let hours: any = Math.floor(sec / 3600);
-    (hours >= 1) ? sec = sec - (hours * 3600) : hours = '00';
-    let min: any = Math.floor(sec / 60);
-    (min >= 1) ? sec = sec - (min * 60) : min = '00';
-    (sec < 1) ? sec = '00' : void 0;
 
-    (min.toString().length == 1) ? min = '0' + min : void 0;
-    (sec.toString().length == 1) ? sec = '0' + sec : void 0;
-
-    return min + ':' + sec.toString().split(".")[0];
-  }
 
   return (
     <div className='top-10'>
